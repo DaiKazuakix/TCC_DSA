@@ -22,6 +22,39 @@ Role a página até a seção "Supplementary file", no final.
 Baixe o(s) arquivo(s) de contagem indicado(s) na coluna "Arquivo utilizado" (clique em (http) ou (ftp) ao lado do nome do arquivo).
 Salve o arquivo baixado na pasta scripts/ (ou na pasta de onde o script correspondente for executado) — cada script indica, no cabeçalho, o nome de arquivo que espera encontrar.
 
+Passo a passo de execução; 
+Ordem de execução dos scripts
+
+Os scripts em scripts/ devem ser executados na ordem abaixo. Os nomes de arquivo e as saídas geradas ainda estão sendo organizados — a tabela indica o nome sugerido e, entre parênteses, o nome atual do arquivo, quando diferente.
+
+Ordem	Script
+
+O que faz
+
+1	integracao_datasets.py (Integrador de Datasets)	
+Busca os 4 datasets, converte Ensembl → símbolo do gene (via mygene.info) e gera a matriz integrada
+
+2	clustering_nao_supervisionado.py (Analise sem normalizacao)	
+Padronização z-score, PCA e K-means (3 critérios de seleção de genes), antes da correção de lote
+
+3	pipeline_consolidado.py (Analise pos normalizacao)	
+Normalização log2(CPM+1), correção de lote por ComBat, nova clusterização e análise diferencial por teste t
+
+4	sensibilidade_limiares.py (Threshold)	
+Testa diferentes limiares de log2FC sobre o resultado da etapa anterior (análise de sensibilidade)
+
+5	deseq2_principal.py (Analise deseq2 completa)	
+Análise diferencial principal via DESeq2 — idoso vs. jovem cruzado (4 datasets, resultado principal) e metformina vs. placebo (GSE157585, discutido nas Limitações). O script também tenta uma terceira comparação (oleuropeína vs. placebo, GSE318937), que não gerou saída e não foi incorporada ao TCC.
+
+6	enrichr_deseq2.py (07_enrich)	
+Enriquecimento funcional (Enrichr) sobre os genes diferencialmente expressos pelo DESeq2
+
+7	dgidb_farmacos.py (DGldb)	
+Mapeamento gene → fármaco (DGIdb) sobre os genes do DESeq2
+
+Cada script indica, no próprio cabeçalho, os arquivos de entrada que espera encontrar e a pasta de saída. Scripts exploratórios ou de versões anteriores (ex.: análise sobre o limiar de 0,15 pré-DESeq2) foram mantidos no repositório para documentar o percurso metodológico, mas não fazem parte do fluxo principal acima.
+
+
 Tecnologias Utilizadas
 Python 3 (ambiente Anaconda / Spyder)
 pandas, numpy — manipulação de dados
