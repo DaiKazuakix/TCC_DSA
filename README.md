@@ -36,5 +36,3 @@ requests — consulta às APIs do Enrichr e do DGIdb
 Trabalho acadêmico (TCC). Direitos reservados ao autor. Para reuso do código, entre em contato: jkazukaa@gmail.com
 ## 📧 Contato
 
-- **E-mail:** [seu-email@exemplo.com]
-- **LinkedIn:** [link-do-seu-linkedin]
